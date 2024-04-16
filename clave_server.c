@@ -6,74 +6,86 @@
 
 #include "clave.h"
 
-int *
-init_1_svc(struct svc_req *rqstp)
+bool_t
+init_1_svc(int *result, struct svc_req *rqstp)
 {
-	static int  result;
+	bool_t retval;
 
 	/*
 	 * insert server code here
 	 */
 
-	return &result;
+	return retval;
 }
 
-int *
-set_value_1_svc(int arg1, char *arg2, int arg3, double_array arg4,  struct svc_req *rqstp)
+bool_t
+set_value_1_svc(int arg1, char *arg2, int arg3, double_array arg4, int *result,  struct svc_req *rqstp)
 {
-	static int  result;
+	bool_t retval;
 
 	/*
 	 * insert server code here
 	 */
 
-	return &result;
+	return retval;
 }
 
-get_value_result *
-get_value_1_svc(int arg1,  struct svc_req *rqstp)
+bool_t
+get_value_1_svc(int arg1, get_value_result *result,  struct svc_req *rqstp)
 {
-	static get_value_result  result;
+	bool_t retval;
 
 	/*
 	 * insert server code here
 	 */
 
-	return &result;
+	return retval;
 }
 
-int *
-modify_value_1_svc(int arg1, char *arg2, int arg3, double_array arg4,  struct svc_req *rqstp)
+bool_t
+modify_value_1_svc(int arg1, char *arg2, int arg3, double_array arg4, int *result,  struct svc_req *rqstp)
 {
-	static int  result;
+	bool_t retval;
 
 	/*
 	 * insert server code here
 	 */
 
-	return &result;
+	return retval;
 }
 
-int *
-delete_key_1_svc(int arg1,  struct svc_req *rqstp)
+bool_t
+delete_key_1_svc(int arg1, int *result,  struct svc_req *rqstp)
 {
-	static int  result;
+	bool_t retval;
 
 	/*
 	 * insert server code here
 	 */
 
-	return &result;
+	return retval;
 }
 
-int *
-exist_1_svc(int arg1,  struct svc_req *rqstp)
+bool_t
+exist_1_svc(int arg1, int *result,  struct svc_req *rqstp)
 {
-	static int  result;
+	bool_t retval;
 
 	/*
 	 * insert server code here
 	 */
 
-	return &result;
+	return retval;
+}
+
+int
+clave_valor_1_freeresult (SVCXPRT *transp, xdrproc_t xdr_result, caddr_t result)
+{
+	xdr_free (xdr_result, result);
+
+	/*
+	 * Insert additional freeing code here, if needed
+	 */
+
+	return 1;
 }

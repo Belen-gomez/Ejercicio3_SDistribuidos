@@ -2,10 +2,12 @@ typedef double double_array<>;
 
 struct get_value_result {
     int status;
+    int clave;
     string value1<>;
     int N_value2;
     double_array V_value2;
 };
+
 
 program CLAVE_VALOR {
     version CLAVE_VALOR_V1 {

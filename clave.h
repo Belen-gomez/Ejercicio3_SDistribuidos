@@ -8,6 +8,7 @@
 
 #include <rpc/rpc.h>
 
+#include <pthread.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -21,6 +22,7 @@ typedef struct {
 
 struct get_value_result {
 	int status;
+	int clave;
 	char *value1;
 	int N_value2;
 	double_array V_value2;
@@ -48,44 +50,44 @@ typedef struct modify_value_1_argument modify_value_1_argument;
 
 #if defined(__STDC__) || defined(__cplusplus)
 #define INIT 1
-extern  int * init_1(CLIENT *);
-extern  int * init_1_svc(struct svc_req *);
+extern  enum clnt_stat init_1(int *, CLIENT *);
+extern  bool_t init_1_svc(int *, struct svc_req *);
 #define SET_VALUE 2
-extern  int * set_value_1(int , char *, int , double_array , CLIENT *);
-extern  int * set_value_1_svc(int , char *, int , double_array , struct svc_req *);
+extern  enum clnt_stat set_value_1(int , char *, int , double_array , int *, CLIENT *);
+extern  bool_t set_value_1_svc(int , char *, int , double_array , int *, struct svc_req *);
 #define GET_VALUE 3
-extern  get_value_result * get_value_1(int , CLIENT *);
-extern  get_value_result * get_value_1_svc(int , struct svc_req *);
+extern  enum clnt_stat get_value_1(int , get_value_result *, CLIENT *);
+extern  bool_t get_value_1_svc(int , get_value_result *, struct svc_req *);
 #define MODIFY_VALUE 4
-extern  int * modify_value_1(int , char *, int , double_array , CLIENT *);
-extern  int * modify_value_1_svc(int , char *, int , double_array , struct svc_req *);
+extern  enum clnt_stat modify_value_1(int , char *, int , double_array , int *, CLIENT *);
+extern  bool_t modify_value_1_svc(int , char *, int , double_array , int *, struct svc_req *);
 #define DELETE_KEY 5
-extern  int * delete_key_1(int , CLIENT *);
-extern  int * delete_key_1_svc(int , struct svc_req *);
+extern  enum clnt_stat delete_key_1(int , int *, CLIENT *);
+extern  bool_t delete_key_1_svc(int , int *, struct svc_req *);
 #define EXIST 6
-extern  int * exist_1(int , CLIENT *);
-extern  int * exist_1_svc(int , struct svc_req *);
+extern  enum clnt_stat exist_1(int , int *, CLIENT *);
+extern  bool_t exist_1_svc(int , int *, struct svc_req *);
 extern int clave_valor_1_freeresult (SVCXPRT *, xdrproc_t, caddr_t);
 
 #else /* K&R C */
 #define INIT 1
-extern  int * init_1();
-extern  int * init_1_svc();
+extern  enum clnt_stat init_1();
+extern  bool_t init_1_svc();
 #define SET_VALUE 2
-extern  int * set_value_1();
-extern  int * set_value_1_svc();
+extern  enum clnt_stat set_value_1();
+extern  bool_t set_value_1_svc();
 #define GET_VALUE 3
-extern  get_value_result * get_value_1();
-extern  get_value_result * get_value_1_svc();
+extern  enum clnt_stat get_value_1();
+extern  bool_t get_value_1_svc();
 #define MODIFY_VALUE 4
-extern  int * modify_value_1();
-extern  int * modify_value_1_svc();
+extern  enum clnt_stat modify_value_1();
+extern  bool_t modify_value_1_svc();
 #define DELETE_KEY 5
-extern  int * delete_key_1();
-extern  int * delete_key_1_svc();
+extern  enum clnt_stat delete_key_1();
+extern  bool_t delete_key_1_svc();
 #define EXIST 6
-extern  int * exist_1();
-extern  int * exist_1_svc();
+extern  enum clnt_stat exist_1();
+extern  bool_t exist_1_svc();
 extern int clave_valor_1_freeresult ();
 #endif /* K&R C */
 

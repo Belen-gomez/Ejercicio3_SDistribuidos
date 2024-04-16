@@ -6,6 +6,11 @@
 CLIENT = clave_client
 SERVER = clave_server
 
+BIN_FILES  =cliente_prueba
+LIB_FILE = libclaves.so
+
+CC = gcc
+
 SOURCES_CLNT.c = 
 SOURCES_CLNT.h = 
 SOURCES_SVC.c = 
@@ -20,8 +25,11 @@ OBJECTS_CLNT = $(SOURCES_CLNT.c:%.c=%.o) $(TARGETS_CLNT.c:%.c=%.o)
 OBJECTS_SVC = $(SOURCES_SVC.c:%.c=%.o) $(TARGETS_SVC.c:%.c=%.o)
 # Compiler flags 
 
+CPPFLAGS = -I$(INSTALL_PATH)/include -Wall
+LDFLAGS = -L$(INSTALL_PATH)/lib/
+
 CFLAGS += -g -I/usr/include/tirpc
-LDLIBS += -lnsl -ltirpc
+LDLIBS += -lnsl -lpthread -ldl -ltirpc -lrt
 RPCGENFLAGS = 
 
 # Targets 
@@ -31,7 +39,7 @@ all : $(CLIENT) $(SERVER)
 $(TARGETS) : $(SOURCES.x) 
 	rpcgen $(RPCGENFLAGS) $(SOURCES.x)
 
-$(OBJECTS_CLNT) : $(SOURCES_CLNT.c) $(SOURCES_CLNT.h) $(TARGETS_CLNT.c) 
+$(OBJECTS_CLNT) : $(SOURCES_CLNT.c) $(SOURCES_CLNT.h) $(TARGETS_CLNT.c) cliente_prueba.o claves.o mensajes.o clave_clnt.o
 
 $(OBJECTS_SVC) : $(SOURCES_SVC.c) $(SOURCES_SVC.h) $(TARGETS_SVC.c) 
 
@@ -41,6 +49,23 @@ $(CLIENT) : $(OBJECTS_CLNT)
 $(SERVER) : $(OBJECTS_SVC) 
 	$(LINK.c) -o $(SERVER) $(OBJECTS_SVC) $(LDLIBS)
 
+
+all: $(BIN_FILES) $(LIB_FILE)
+
+cliente_prueba: $(OBJECTS_CLNT)
+	$(CC) $(LDFLAGS) $^ $(LDLIBS) -o $@
+	chmod +x $@
+
+
+$(LIB_FILE): claves.o
+	$(CC) $(LDFLAGS) -shared $^ -o $@
+	
+%.o: %.c
+	$(CC) $(CPPFLAGS) $(CFLAGS) -fPIC -c $< -o $@
+
+
  clean:
-	 $(RM) core $(TARGETS) $(OBJECTS_CLNT) $(OBJECTS_SVC) $(CLIENT) $(SERVER)
+	 m -f $(BIN_FILES) $(LIB_FILE) *.o $(RM) core $(TARGETS) $(OBJECTS_CLNT) $(OBJECTS_SVC) $(CLIENT) $(SERVER) 
+
+.PHONY: all clean
 

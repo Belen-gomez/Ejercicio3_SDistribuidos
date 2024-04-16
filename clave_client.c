@@ -11,22 +11,28 @@ void
 clave_valor_1(char *host)
 {
 	CLIENT *clnt;
-	int  *result_1;
-	int  *result_2;
+	enum clnt_stat retval_1;
+	int result_1;
+	enum clnt_stat retval_2;
+	int result_2;
 	int set_value_1_arg1;
 	char *set_value_1_arg2;
 	int set_value_1_arg3;
 	double_array set_value_1_arg4;
-	get_value_result  *result_3;
+	enum clnt_stat retval_3;
+	get_value_result result_3;
 	int get_value_1_arg1;
-	int  *result_4;
+	enum clnt_stat retval_4;
+	int result_4;
 	int modify_value_1_arg1;
 	char *modify_value_1_arg2;
 	int modify_value_1_arg3;
 	double_array modify_value_1_arg4;
-	int  *result_5;
+	enum clnt_stat retval_5;
+	int result_5;
 	int delete_key_1_arg1;
-	int  *result_6;
+	enum clnt_stat retval_6;
+	int result_6;
 	int exist_1_arg1;
 
 #ifndef	DEBUG
@@ -37,28 +43,28 @@ clave_valor_1(char *host)
 	}
 #endif	/* DEBUG */
 
-	result_1 = init_1(clnt);
-	if (result_1 == (int *) NULL) {
+	retval_1 = init_1(&result_1, clnt);
+	if (retval_1 != RPC_SUCCESS) {
 		clnt_perror (clnt, "call failed");
 	}
-	result_2 = set_value_1(set_value_1_arg1, set_value_1_arg2, set_value_1_arg3, set_value_1_arg4, clnt);
-	if (result_2 == (int *) NULL) {
+	retval_2 = set_value_1(set_value_1_arg1, set_value_1_arg2, set_value_1_arg3, set_value_1_arg4, &result_2, clnt);
+	if (retval_2 != RPC_SUCCESS) {
 		clnt_perror (clnt, "call failed");
 	}
-	result_3 = get_value_1(get_value_1_arg1, clnt);
-	if (result_3 == (get_value_result *) NULL) {
+	retval_3 = get_value_1(get_value_1_arg1, &result_3, clnt);
+	if (retval_3 != RPC_SUCCESS) {
 		clnt_perror (clnt, "call failed");
 	}
-	result_4 = modify_value_1(modify_value_1_arg1, modify_value_1_arg2, modify_value_1_arg3, modify_value_1_arg4, clnt);
-	if (result_4 == (int *) NULL) {
+	retval_4 = modify_value_1(modify_value_1_arg1, modify_value_1_arg2, modify_value_1_arg3, modify_value_1_arg4, &result_4, clnt);
+	if (retval_4 != RPC_SUCCESS) {
 		clnt_perror (clnt, "call failed");
 	}
-	result_5 = delete_key_1(delete_key_1_arg1, clnt);
-	if (result_5 == (int *) NULL) {
+	retval_5 = delete_key_1(delete_key_1_arg1, &result_5, clnt);
+	if (retval_5 != RPC_SUCCESS) {
 		clnt_perror (clnt, "call failed");
 	}
-	result_6 = exist_1(exist_1_arg1, clnt);
-	if (result_6 == (int *) NULL) {
+	retval_6 = exist_1(exist_1_arg1, &result_6, clnt);
+	if (retval_6 != RPC_SUCCESS) {
 		clnt_perror (clnt, "call failed");
 	}
 #ifndef	DEBUG
