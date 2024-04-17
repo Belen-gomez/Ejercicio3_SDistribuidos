@@ -5,7 +5,7 @@
 #define MAX_SIZE 32
 #define MAXSIZE_STRING 256
 
-/*int main(){
+int main(){
     //El cliente 3 inserta el elemento 3
     char cadena[MAXSIZE_STRING] = "Elemento 3";
     int N_value2 = 2;
@@ -41,7 +41,7 @@
     
     
     //El cliente 3 obtiene los valores asociados a la clave 2, que ha insertado el cliente 1
-    char *gvalue= (char *) malloc(sizeof(char)*MAXSIZE_STRING);
+    /*char *gvalue= (char *) malloc(sizeof(char)*MAXSIZE_STRING);
     int N3;
     double *vector3 = (double *) malloc(sizeof(double)*MAX_SIZE);
     if(get_value(1, gvalue, &N3, vector3)){
@@ -58,7 +58,7 @@
             printf("%f, ", vector3[i]);
         }        
         printf("]\n");
-    }
+    }*/
     
     //El cliente 3 modifica los valores asociados a la clave 2, que ha insertado el cliente 1
     char cadena4[MAXSIZE_STRING] = "Adios mundo";
@@ -123,4 +123,4 @@
 
     
     return 0;
-}*/
+}

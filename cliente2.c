@@ -5,7 +5,7 @@
 #define MAX_SIZE 32
 #define MAXSIZE_STRING 256
 
-/*int main(){
+int main(){
     
     //Primer cliente. EL primer cliente debe hacer la función init.
     if(init()==-1){
@@ -80,7 +80,7 @@
     }
   
     //El cliente 2 intenta obtener los valores asociados a la clave 4, que no existe
-    char gvalue5[MAXSIZE_STRING];
+    /*char gvalue5[MAXSIZE_STRING];
     int N5;
     double vector5[32];
     if(get_value(4, gvalue5, &N5, vector5)){
@@ -94,7 +94,7 @@
         for(int i=0; i<N5; i++){
             printf("%f\n", vector5[i]);
         }        
-    }
+    }*/
 
     //El cliente 2 intenta modificar los valores asociados a la clave 4, que no existe
     char cadena6[MAXSIZE_STRING] = "Adios mundo";
@@ -122,4 +122,4 @@
         printf("---------------Cliente 2 delete-----------------\n");
         printf("Elemento eliminado\n");
     }
-}*/
+}
