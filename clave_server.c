@@ -6,16 +6,37 @@
 
 #include "clave.h"
 
+typedef struct Tupla {
+    int clave;
+    char *valor1; // Máximo de 255 caracteres + 1 para el carácter nulo de terminación de cadena
+    int N;
+    double *valor2;
+    struct Tupla *siguiente;
+} Tupla;
+
+typedef struct Tupla * List;
+
+List l = NULL;
 bool_t
 init_1_svc(int *result, struct svc_req *rqstp)
 {
 	bool_t retval;
 
-	/*
-	 * insert server code here
-	 */
+	while (l != NULL) {
+        List temp = l;
+        l = (l)->siguiente;
+        free(temp->valor2);
+        free(temp->valor1);
+        free(temp);
+    }
+    l = NULL;
 
-	return retval;
+    int n = 0;
+    retval = TRUE;
+    *result = n;
+    printf("---------------------Lista inicializada--------------------\n");
+    printf("\n\n"); // Agregar una línea en blanco
+    return retval;
 }
 
 bool_t

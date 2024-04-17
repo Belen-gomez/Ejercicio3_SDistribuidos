@@ -53,7 +53,7 @@ $(SERVER) : $(OBJECTS_SVC)
 all: $(BIN_FILES) $(LIB_FILE)
 
 cliente_prueba: $(OBJECTS_CLNT)
-	$(CC) $(LDFLAGS) $^ $(LDLIBS) -o $@
+	$(LINK.c) -o $(CLIENT) $(OBJECTS_CLNT) $(LDLIBS)
 	chmod +x $@
 
 
@@ -63,9 +63,9 @@ $(LIB_FILE): claves.o
 %.o: %.c
 	$(CC) $(CPPFLAGS) $(CFLAGS) -fPIC -c $< -o $@
 
+clean:
+	rm -f $(OBJECTS_CLNT) $(OBJECTS_SVC) $(CLIENT) $(SERVER) $(LIB_FILE)
 
- clean:
-	 m -f $(BIN_FILES) $(LIB_FILE) *.o $(RM) core $(TARGETS) $(OBJECTS_CLNT) $(OBJECTS_SVC) $(CLIENT) $(SERVER) 
 
 .PHONY: all clean
 
