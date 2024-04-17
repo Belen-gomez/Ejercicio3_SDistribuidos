@@ -8,7 +8,7 @@
 
 
 void
-clave_valor_1(char *host)
+clave_1(char *host)
 {
 	CLIENT *clnt;
 	enum clnt_stat retval_1;
@@ -22,7 +22,7 @@ clave_valor_1(char *host)
 	enum clnt_stat retval_3;
 	get_value_result result_3;
 	int get_value_1_arg1;
-	enum clnt_stat retval_4;
+	/*enum clnt_stat retval_4;
 	int result_4;
 	int modify_value_1_arg1;
 	char *modify_value_1_arg2;
@@ -33,10 +33,10 @@ clave_valor_1(char *host)
 	int delete_key_1_arg1;
 	enum clnt_stat retval_6;
 	int result_6;
-	int exist_1_arg1;
+	int exist_1_arg1;*/
 
 #ifndef	DEBUG
-	clnt = clnt_create (host, CLAVE_VALOR, CLAVE_VALOR_V1, "udp");
+	clnt = clnt_create (host, CLAVE, CLAVE_V1, "udp");
 	if (clnt == NULL) {
 		clnt_pcreateerror (host);
 		exit (1);
@@ -47,15 +47,35 @@ clave_valor_1(char *host)
 	if (retval_1 != RPC_SUCCESS) {
 		clnt_perror (clnt, "call failed");
 	}
+
+	set_value_1_arg1 = 1;
+	set_value_1_arg2 = "Hola";
+	set_value_1_arg3 = 3;	
+	set_value_1_arg4.double_array_val = (double *) malloc(3 * sizeof(double));
+	set_value_1_arg4.double_array_len = 3;
+	set_value_1_arg4.double_array_val[0] = 1.0;
+	set_value_1_arg4.double_array_val[1] = 2.0;
+	set_value_1_arg4.double_array_val[2] = 3.0;
 	retval_2 = set_value_1(set_value_1_arg1, set_value_1_arg2, set_value_1_arg3, set_value_1_arg4, &result_2, clnt);
 	if (retval_2 != RPC_SUCCESS) {
 		clnt_perror (clnt, "call failed");
 	}
+	printf("Set value\n");
+
+	get_value_1_arg1 = 2;
+	
+	
+	result_3.value1 = malloc(256 * sizeof(char)); // Asigna memoria para value1
+	result_3.V_value2.double_array_val = (double *)malloc(32 * sizeof(double)); // Asigna memoria para el array
+	memset(&result_3, 0, sizeof(result_3)); // Inicializa la estructura
+
 	retval_3 = get_value_1(get_value_1_arg1, &result_3, clnt);
 	if (retval_3 != RPC_SUCCESS) {
 		clnt_perror (clnt, "call failed");
 	}
-	retval_4 = modify_value_1(modify_value_1_arg1, modify_value_1_arg2, modify_value_1_arg3, modify_value_1_arg4, &result_4, clnt);
+	//free(result_3.V_value2.double_array_val);
+
+	/*retval_4 = modify_value_1(modify_value_1_arg1, modify_value_1_arg2, modify_value_1_arg3, modify_value_1_arg4, &result_4, clnt);
 	if (retval_4 != RPC_SUCCESS) {
 		clnt_perror (clnt, "call failed");
 	}
@@ -66,7 +86,7 @@ clave_valor_1(char *host)
 	retval_6 = exist_1(exist_1_arg1, &result_6, clnt);
 	if (retval_6 != RPC_SUCCESS) {
 		clnt_perror (clnt, "call failed");
-	}
+	}*/
 #ifndef	DEBUG
 	clnt_destroy (clnt);
 #endif	 /* DEBUG */
@@ -83,6 +103,6 @@ main (int argc, char *argv[])
 		exit (1);
 	}
 	host = argv[1];
-	clave_valor_1 (host);
+	clave_1 (host);
 exit (0);
 }

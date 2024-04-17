@@ -25,7 +25,7 @@ xdr_get_value_result (XDR *xdrs, get_value_result *objp)
 		 return FALSE;
 	 if (!xdr_int (xdrs, &objp->clave))
 		 return FALSE;
-	 if (!xdr_string (xdrs, &objp->value1, ~0))
+	 if (!xdr_string (xdrs, &objp->value1, 256))
 		 return FALSE;
 	 if (!xdr_int (xdrs, &objp->N_value2))
 		 return FALSE;

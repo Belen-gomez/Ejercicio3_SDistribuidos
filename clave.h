@@ -45,8 +45,8 @@ struct modify_value_1_argument {
 };
 typedef struct modify_value_1_argument modify_value_1_argument;
 
-#define CLAVE_VALOR 99
-#define CLAVE_VALOR_V1 1
+#define CLAVE 99
+#define CLAVE_V1 1
 
 #if defined(__STDC__) || defined(__cplusplus)
 #define INIT 1
@@ -67,7 +67,7 @@ extern  bool_t delete_key_1_svc(int , int *, struct svc_req *);
 #define EXIST 6
 extern  enum clnt_stat exist_1(int , int *, CLIENT *);
 extern  bool_t exist_1_svc(int , int *, struct svc_req *);
-extern int clave_valor_1_freeresult (SVCXPRT *, xdrproc_t, caddr_t);
+extern int clave_1_freeresult (SVCXPRT *, xdrproc_t, caddr_t);
 
 #else /* K&R C */
 #define INIT 1
@@ -88,7 +88,7 @@ extern  bool_t delete_key_1_svc();
 #define EXIST 6
 extern  enum clnt_stat exist_1();
 extern  bool_t exist_1_svc();
-extern int clave_valor_1_freeresult ();
+extern int clave_1_freeresult ();
 #endif /* K&R C */
 
 /* the xdr functions */

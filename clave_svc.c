@@ -53,7 +53,7 @@ _exist_1 (int  *argp, void *result, struct svc_req *rqstp)
 }
 
 static void
-clave_valor_1(struct svc_req *rqstp, register SVCXPRT *transp)
+clave_1(struct svc_req *rqstp, register SVCXPRT *transp)
 {
 	union {
 		set_value_1_argument set_value_1_arg;
@@ -132,7 +132,7 @@ clave_valor_1(struct svc_req *rqstp, register SVCXPRT *transp)
 		fprintf (stderr, "%s", "unable to free arguments");
 		exit (1);
 	}
-	if (!clave_valor_1_freeresult (transp, _xdr_result, (caddr_t) &result))
+	if (!clave_1_freeresult (transp, _xdr_result, (caddr_t) &result))
 		fprintf (stderr, "%s", "unable to free results");
 
 	return;
@@ -143,15 +143,15 @@ main (int argc, char **argv)
 {
 	register SVCXPRT *transp;
 
-	pmap_unset (CLAVE_VALOR, CLAVE_VALOR_V1);
+	pmap_unset (CLAVE, CLAVE_V1);
 
 	transp = svcudp_create(RPC_ANYSOCK);
 	if (transp == NULL) {
 		fprintf (stderr, "%s", "cannot create udp service.");
 		exit(1);
 	}
-	if (!svc_register(transp, CLAVE_VALOR, CLAVE_VALOR_V1, clave_valor_1, IPPROTO_UDP)) {
-		fprintf (stderr, "%s", "unable to register (CLAVE_VALOR, CLAVE_VALOR_V1, udp).");
+	if (!svc_register(transp, CLAVE, CLAVE_V1, clave_1, IPPROTO_UDP)) {
+		fprintf (stderr, "%s", "unable to register (CLAVE, CLAVE_V1, udp).");
 		exit(1);
 	}
 
@@ -160,8 +160,8 @@ main (int argc, char **argv)
 		fprintf (stderr, "%s", "cannot create tcp service.");
 		exit(1);
 	}
-	if (!svc_register(transp, CLAVE_VALOR, CLAVE_VALOR_V1, clave_valor_1, IPPROTO_TCP)) {
-		fprintf (stderr, "%s", "unable to register (CLAVE_VALOR, CLAVE_VALOR_V1, tcp).");
+	if (!svc_register(transp, CLAVE, CLAVE_V1, clave_1, IPPROTO_TCP)) {
+		fprintf (stderr, "%s", "unable to register (CLAVE, CLAVE_V1, tcp).");
 		exit(1);
 	}
 
