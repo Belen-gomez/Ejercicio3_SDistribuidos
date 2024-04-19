@@ -15,35 +15,14 @@ extern "C" {
 #endif
 
 
-typedef struct {
-	u_int double_array_len;
-	double *double_array_val;
-} double_array;
-
-struct get_value_result {
+struct CLAVE_get_value_result {
 	int status;
 	int clave;
-	char *value1;
-	int N_value2;
-	double_array V_value2;
+	char valor1[256];
+	int N_val;
+	double V_valor2[32];
 };
-typedef struct get_value_result get_value_result;
-
-struct set_value_1_argument {
-	int arg1;
-	char *arg2;
-	int arg3;
-	double_array arg4;
-};
-typedef struct set_value_1_argument set_value_1_argument;
-
-struct modify_value_1_argument {
-	int arg1;
-	char *arg2;
-	int arg3;
-	double_array arg4;
-};
-typedef struct modify_value_1_argument modify_value_1_argument;
+typedef struct CLAVE_get_value_result CLAVE_get_value_result;
 
 #define CLAVE 99
 #define CLAVE_V1 1
@@ -53,14 +32,14 @@ typedef struct modify_value_1_argument modify_value_1_argument;
 extern  enum clnt_stat init_1(int *, CLIENT *);
 extern  bool_t init_1_svc(int *, struct svc_req *);
 #define SET_VALUE 2
-extern  enum clnt_stat set_value_1(int , char *, int , double_array , int *, CLIENT *);
-extern  bool_t set_value_1_svc(int , char *, int , double_array , int *, struct svc_req *);
+extern  enum clnt_stat set_value_1(struct CLAVE_get_value_result , int *, CLIENT *);
+extern  bool_t set_value_1_svc(struct CLAVE_get_value_result , int *, struct svc_req *);
 #define GET_VALUE 3
-extern  enum clnt_stat get_value_1(int , get_value_result *, CLIENT *);
-extern  bool_t get_value_1_svc(int , get_value_result *, struct svc_req *);
+extern  enum clnt_stat get_value_1(int , struct CLAVE_get_value_result *, CLIENT *);
+extern  bool_t get_value_1_svc(int , struct CLAVE_get_value_result *, struct svc_req *);
 #define MODIFY_VALUE 4
-extern  enum clnt_stat modify_value_1(int , char *, int , double_array , int *, CLIENT *);
-extern  bool_t modify_value_1_svc(int , char *, int , double_array , int *, struct svc_req *);
+extern  enum clnt_stat modify_value_1(struct CLAVE_get_value_result , int *, CLIENT *);
+extern  bool_t modify_value_1_svc(struct CLAVE_get_value_result , int *, struct svc_req *);
 #define DELETE_KEY 5
 extern  enum clnt_stat delete_key_1(int , int *, CLIENT *);
 extern  bool_t delete_key_1_svc(int , int *, struct svc_req *);
@@ -94,16 +73,10 @@ extern int clave_1_freeresult ();
 /* the xdr functions */
 
 #if defined(__STDC__) || defined(__cplusplus)
-extern  bool_t xdr_double_array (XDR *, double_array*);
-extern  bool_t xdr_get_value_result (XDR *, get_value_result*);
-extern  bool_t xdr_set_value_1_argument (XDR *, set_value_1_argument*);
-extern  bool_t xdr_modify_value_1_argument (XDR *, modify_value_1_argument*);
+extern  bool_t xdr_CLAVE_get_value_result (XDR *, CLAVE_get_value_result*);
 
 #else /* K&R C */
-extern bool_t xdr_double_array ();
-extern bool_t xdr_get_value_result ();
-extern bool_t xdr_set_value_1_argument ();
-extern bool_t xdr_modify_value_1_argument ();
+extern bool_t xdr_CLAVE_get_value_result ();
 
 #endif /* K&R C */
 

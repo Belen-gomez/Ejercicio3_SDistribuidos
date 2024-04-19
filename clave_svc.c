@@ -23,9 +23,9 @@ _init_1 (void  *argp, void *result, struct svc_req *rqstp)
 }
 
 int
-_set_value_1 (set_value_1_argument *argp, void *result, struct svc_req *rqstp)
+_set_value_1 (struct CLAVE_get_value_result  *argp, void *result, struct svc_req *rqstp)
 {
-	return (set_value_1_svc(argp->arg1, argp->arg2, argp->arg3, argp->arg4, result, rqstp));
+	return (set_value_1_svc(*argp, result, rqstp));
 }
 
 int
@@ -35,9 +35,9 @@ _get_value_1 (int  *argp, void *result, struct svc_req *rqstp)
 }
 
 int
-_modify_value_1 (modify_value_1_argument *argp, void *result, struct svc_req *rqstp)
+_modify_value_1 (struct CLAVE_get_value_result  *argp, void *result, struct svc_req *rqstp)
 {
-	return (modify_value_1_svc(argp->arg1, argp->arg2, argp->arg3, argp->arg4, result, rqstp));
+	return (modify_value_1_svc(*argp, result, rqstp));
 }
 
 int
@@ -56,16 +56,16 @@ static void
 clave_1(struct svc_req *rqstp, register SVCXPRT *transp)
 {
 	union {
-		set_value_1_argument set_value_1_arg;
+		struct CLAVE_get_value_result set_value_1_arg;
 		int get_value_1_arg;
-		modify_value_1_argument modify_value_1_arg;
+		struct CLAVE_get_value_result modify_value_1_arg;
 		int delete_key_1_arg;
 		int exist_1_arg;
 	} argument;
 	union {
 		int init_1_res;
 		int set_value_1_res;
-		get_value_result get_value_1_res;
+		struct CLAVE_get_value_result get_value_1_res;
 		int modify_value_1_res;
 		int delete_key_1_res;
 		int exist_1_res;
@@ -86,19 +86,19 @@ clave_1(struct svc_req *rqstp, register SVCXPRT *transp)
 		break;
 
 	case SET_VALUE:
-		_xdr_argument = (xdrproc_t) xdr_set_value_1_argument;
+		_xdr_argument = (xdrproc_t) xdr_CLAVE_get_value_result;
 		_xdr_result = (xdrproc_t) xdr_int;
 		local = (bool_t (*) (char *, void *,  struct svc_req *))_set_value_1;
 		break;
 
 	case GET_VALUE:
 		_xdr_argument = (xdrproc_t) xdr_int;
-		_xdr_result = (xdrproc_t) xdr_get_value_result;
+		_xdr_result = (xdrproc_t) xdr_CLAVE_get_value_result;
 		local = (bool_t (*) (char *, void *,  struct svc_req *))_get_value_1;
 		break;
 
 	case MODIFY_VALUE:
-		_xdr_argument = (xdrproc_t) xdr_modify_value_1_argument;
+		_xdr_argument = (xdrproc_t) xdr_CLAVE_get_value_result;
 		_xdr_result = (xdrproc_t) xdr_int;
 		local = (bool_t (*) (char *, void *,  struct svc_req *))_modify_value_1;
 		break;

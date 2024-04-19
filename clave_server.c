@@ -40,13 +40,16 @@ init_1_svc(int *result, struct svc_req *rqstp)
 }
 
 bool_t
-set_value_1_svc(int arg1, char *arg2, int arg3, double_array arg4, int *result,  struct svc_req *rqstp)
+set_value_1_svc(struct CLAVE_get_value_result arg1, int *result,  struct svc_req *rqstp)
 {
 	bool_t retval;
 	List aux = l;
+	printf("%d",arg1.clave);
+	printf("%s",arg1.valor1);
     while (aux != NULL) {
-        if (aux->clave == arg1) {
-            printf("----Error: Ya existe un elemento con la clave %d. No se puede insertar----\n", arg1);
+        if (aux->clave == arg1.clave) {
+            printf("----Error: Ya existe un elemento con la clave %d. No se puede insertar----\n", arg1.clave);
+			arg1.status = -1;
             *result = -1; // Clave duplicada, retorna error
 			retval = TRUE;
 			return retval;
@@ -57,30 +60,32 @@ set_value_1_svc(int arg1, char *arg2, int arg3, double_array arg4, int *result, 
 
     ptr = (struct Tupla *) malloc(sizeof(struct Tupla));
     if (ptr == NULL){ 
+		arg1.status = -1;
         *result = -1; 
 		retval = FALSE;
 		return retval;
 	}
-    ptr->clave = arg1;
-    ptr->valor1 = malloc(strlen(arg2) + 1);
-    strcpy(ptr->valor1, arg2);
-    ptr->N = arg3;
-    ptr->valor2 = malloc(arg3 * sizeof(double));
-    for(int i = 0; i < arg3; i++){
-        ptr->valor2[i] = arg4.double_array_val[i];
-    }
+    ptr->clave = arg1.clave;
+	ptr->valor1 = malloc(strlen(arg1.valor1) + 1); // +1 para el carácter nulo de terminación de cadena
+	strcpy(ptr->valor1, arg1.valor1);
+
+	ptr->N = arg1.N_val;
+	ptr->valor2 = malloc(sizeof(double) * arg1.N_val);
+	for (int i = 0; i < arg1.N_val; i++) {
+		ptr->valor2[i] = arg1.V_valor2[i];
+	}
     ptr->siguiente = l;
     l = ptr;
-	printf("------------Tupla de clave %d insertada------------\n", arg1);
-    printList();
+	printf("------------Tupla de clave %d insertada------------\n", arg1.clave);
+    //printList();
     retval = TRUE;
+	arg1.status = 0;
     *result = 0;
 	return retval;
 }
 
-
 bool_t
-get_value_1_svc(int arg1, get_value_result *result,  struct svc_req *rqstp)
+get_value_1_svc(int clave, struct CLAVE_get_value_result *result,  struct svc_req *rqstp)
 {
 	bool_t retval;
 	printf("---------------------Get Value--------------------\n");
@@ -88,73 +93,73 @@ get_value_1_svc(int arg1, get_value_result *result,  struct svc_req *rqstp)
 	// Verificar si la lista está vacía
 	if (l == NULL) {
         printf("La lista está vacía");
-		result->status = -1;
 		retval = TRUE;
+		result->status = -1;
         return retval;
     }
     // Buscar la tupla con la clave especificada
     List aux = l;
     while (aux != NULL) {
-        if (aux->clave == arg1) {
+        if (aux->clave == clave) {
             
             // Se encontró la clave, copiar los valores a la estructura de respuesta
             result->clave = aux->clave;
-            result->value1 = strdup(aux->valor1);
-            result->N_value2 = aux->N;
-            for (int i = 0; i < result->N_value2; i++) {
-                result->V_value2.double_array_val[i] = aux->valor2[i];
+            strcpy(result->valor1, aux->valor1);
+            result->N_val = aux->N;
+            for (int i = 0; i < result->N_val; i++) {
+                result->V_valor2[i] = aux->valor2[i];
             }
-            result->status = 0;
 			retval = TRUE;
+			result->status = 0;
 			return retval;
         }
         aux = aux->siguiente;
     }
     perror("Se ha intentado acceder a una clave que no existe");
-    result->status = -1;
 	retval = TRUE;
+	result->status = 0;
 	return retval;
 }
 
 bool_t
-modify_value_1_svc(int arg1, char *arg2, int arg3, double_array arg4, int *result,  struct svc_req *rqstp)
-{
+modify_value_1_svc(struct CLAVE_get_value_result arg1, int *result,  struct svc_req *rqstp)
+{	
 	bool_t retval;
-
 	if (l == NULL) {
-        perror("------------La lista está vacía. Modify_value--------------\n");
-        printf("\n\n"); // Agregar una línea en blanco
-        retval = TRUE;
-		*result = -1;
-		return retval;
+        perror("La lista está vacía");
+		retval = TRUE;
+		arg1.status = -1;
+		*result=-1;
+        return retval;
     }
     // Buscar la tupla con la clave especificada
     List aux = l;
     while (aux != NULL) {
-        if (aux->clave == arg1) {
+        if (aux->clave == arg1.clave) {
             // Se encontró la clave, copiar los valores a la estructura de respuesta
-            aux->clave = arg1;
+            aux->clave = arg1.clave;
             free(aux->valor1);
-            aux->valor1 = malloc(strlen(arg2) + 1);
-            strcpy(aux->valor1, arg2);
-            aux->N = arg3;
+            aux->valor1 = malloc(strlen(arg1.valor1) + 1);
+            strcpy(aux->valor1, arg1.valor1);
+            aux->N = arg1.N_val;
             free(aux->valor2);
-            aux->valor2 = malloc(arg3 * sizeof(double));
-            for(int i = 0; i < arg3; i++){
-                aux->valor2[i] = arg4.double_array_val[i];
+            aux->valor2 = malloc(arg1.N_val * sizeof(double));
+            for(int i = 0; i < arg1.N_val; i++){
+                aux->valor2[i] = arg1.V_valor2[i];
+				printf("%f/n",arg1.V_valor2[i]);
+				printf("\n\n"); // Agregar una línea en blanco
             }
 			retval = TRUE;
+			arg1.status=0;
 			*result = 0;
-			printf("------------Tupla de clave %d modificada------------\n", arg1);
-            printList(l);
             return retval;
         }
         aux = aux->siguiente;
     }
-    perror("--------------Se ha intentado modificar a una clave que no existe (modify_value)----------------\n");
-    printf("\n\n"); // Agregar una línea en blanco
+    perror("Se ha intentado modificar a una clave que no existe");
 	retval = TRUE;
-	*result = -1;
+    arg1.status = -1;
+	*result=-1;
 	return retval;
 }
 
@@ -197,7 +202,7 @@ delete_key_1_svc(int arg1, int *result,  struct svc_req *rqstp)
         previous->siguiente = current->siguiente;
     }
 	printf("------------Tupla de clave %d eliminada------------\n", arg1);
-    printList(l);
+    //printList(l);
     // Liberar la memoria del nodo eliminado
     free(current->valor2); // Liberar la memoria del arreglo valor2
     free(current->valor1); // Liberar la memoria de la cadena valor1
@@ -254,19 +259,4 @@ clave_1_freeresult (SVCXPRT *transp, xdrproc_t xdr_result, caddr_t result)
 	 */
 
 	return 1;
-}
-int printList() {
-    List aux = l;
-    printf("Imprimir\n");
-    while(aux != NULL){
-        printf("Nueva tupla\n");
-        printf("Clave=%d    value1=%s   N=%d\n", aux->clave, aux->valor1, aux->N);
-        printf("Valor2:");
-        for(int i = 0; i < aux->N; i++){
-            printf(" %.6f", aux->valor2[i]); // Imprimir valor2[i] con 6 decimales de precisión
-        }
-        printf("\n\n"); // Agregar una línea en blanco después de cada tupla
-        aux = aux->siguiente;
-    }
-    return 0;
 }

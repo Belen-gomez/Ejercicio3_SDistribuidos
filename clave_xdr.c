@@ -6,58 +6,22 @@
 #include "clave.h"
 
 bool_t
-xdr_double_array (XDR *xdrs, double_array *objp)
+xdr_CLAVE_get_value_result (XDR *xdrs, CLAVE_get_value_result *objp)
 {
 	register int32_t *buf;
 
-	 if (!xdr_array (xdrs, (char **)&objp->double_array_val, (u_int *) &objp->double_array_len, ~0,
-		sizeof (double), (xdrproc_t) xdr_double))
-		 return FALSE;
-	return TRUE;
-}
-
-bool_t
-xdr_get_value_result (XDR *xdrs, get_value_result *objp)
-{
-	register int32_t *buf;
-
+	int i;
 	 if (!xdr_int (xdrs, &objp->status))
 		 return FALSE;
 	 if (!xdr_int (xdrs, &objp->clave))
 		 return FALSE;
-	 if (!xdr_string (xdrs, &objp->value1, 256))
+	 if (!xdr_vector (xdrs, (char *)objp->valor1, 256,
+		sizeof (char), (xdrproc_t) xdr_char))
 		 return FALSE;
-	 if (!xdr_int (xdrs, &objp->N_value2))
+	 if (!xdr_int (xdrs, &objp->N_val))
 		 return FALSE;
-	 if (!xdr_double_array (xdrs, &objp->V_value2))
-		 return FALSE;
-	return TRUE;
-}
-
-bool_t
-xdr_set_value_1_argument (XDR *xdrs, set_value_1_argument *objp)
-{
-	 if (!xdr_int (xdrs, &objp->arg1))
-		 return FALSE;
-	 if (!xdr_string (xdrs, &objp->arg2, ~0))
-		 return FALSE;
-	 if (!xdr_int (xdrs, &objp->arg3))
-		 return FALSE;
-	 if (!xdr_double_array (xdrs, &objp->arg4))
-		 return FALSE;
-	return TRUE;
-}
-
-bool_t
-xdr_modify_value_1_argument (XDR *xdrs, modify_value_1_argument *objp)
-{
-	 if (!xdr_int (xdrs, &objp->arg1))
-		 return FALSE;
-	 if (!xdr_string (xdrs, &objp->arg2, ~0))
-		 return FALSE;
-	 if (!xdr_int (xdrs, &objp->arg3))
-		 return FALSE;
-	 if (!xdr_double_array (xdrs, &objp->arg4))
+	 if (!xdr_vector (xdrs, (char *)objp->V_valor2, 32,
+		sizeof (double), (xdrproc_t) xdr_double))
 		 return FALSE;
 	return TRUE;
 }
