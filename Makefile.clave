@@ -2,10 +2,9 @@
 
 # Parameters
 
-CLIENT = clave_client
 SERVER = clave_server
 
-BIN_FILES  = cliente_prueba cliente1 cliente2 cliente3
+BIN_FILES  = cliente1 cliente2 cliente3
 LIB_FILE = libclaves.so
 
 CC = gcc
@@ -17,8 +16,8 @@ SOURCES_SVC.h =
 SOURCES.x = clave.x
 
 TARGETS_SVC.c = clave_svc.c clave_server.c clave_xdr.c
-TARGETS_CLNT.c = clave_clnt.c clave_client.c clave_xdr.c
-TARGETS = clave.h clave_xdr.c clave_clnt.c clave_svc.c clave_client.c clave_server.c
+TARGETS_CLNT.c = clave_clnt.c clave_xdr.c
+TARGETS = clave.h clave_xdr.c clave_clnt.c clave_svc.c clave_server.c
 
 OBJECTS_CLNT = $(SOURCES_CLNT.c:%.c=%.o) $(TARGETS_CLNT.c:%.c=%.o)
 OBJECTS_SVC = $(SOURCES_SVC.c:%.c=%.o) $(TARGETS_SVC.c:%.c=%.o)
@@ -42,17 +41,10 @@ $(OBJECTS_CLNT) : $(SOURCES_CLNT.c) $(SOURCES_CLNT.h) $(TARGETS_CLNT.c) cliente_
 
 $(OBJECTS_SVC) : $(SOURCES_SVC.c) $(SOURCES_SVC.h) $(TARGETS_SVC.c)
 
-$(CLIENT) : $(OBJECTS_CLNT)
-	$(CC) -o $(CLIENT) $(OBJECTS_CLNT) $(LDLIBS)
-
 $(SERVER) : $(OBJECTS_SVC)
 	$(CC) -o $(SERVER) $(OBJECTS_SVC) $(LDLIBS)
 
 all: $(BIN_FILES) $(LIB_FILE)
-
-cliente_prueba: cliente_prueba.o claves.o mensajes.o clave_clnt.o clave_xdr.o
-	$(CC) -o $@ $^ $(LDLIBS)
-	chmod +x $@
 
 cliente1: cliente1.o claves.o mensajes.o clave_clnt.o clave_xdr.o
 	$(CC) -o $@ $^ $(LDLIBS)

@@ -17,7 +17,24 @@ typedef struct Tupla {
 typedef struct Tupla * List;
 
 List l = NULL;
+
+int printList() {
+    List aux = l;
+    while(aux != NULL){
+        printf("Nueva tupla\n");
+        printf("Clave=%d    value1=%s   N=%d\n", aux->clave, aux->valor1, aux->N);
+        printf("Valor2:");
+        for(int i = 0; i < aux->N; i++){
+            printf(" %.6f", aux->valor2[i]); // Imprimir valor2[i] con 6 decimales de precisión
+        }
+        printf("\n\n"); // Agregar una línea en blanco después de cada tupla
+        aux = aux->siguiente;
+    }
+    return 0;
+}
+
 bool_t
+
 init_1_svc(int *result, struct svc_req *rqstp)
 {
 	bool_t retval;
@@ -44,11 +61,10 @@ set_value_1_svc(struct CLAVE_get_value_result arg1, int *result,  struct svc_req
 {
 	bool_t retval;
 	List aux = l;
-	printf("%d",arg1.clave);
-	printf("%s",arg1.valor1);
     while (aux != NULL) {
         if (aux->clave == arg1.clave) {
             printf("----Error: Ya existe un elemento con la clave %d. No se puede insertar----\n", arg1.clave);
+            printf("\n\n"); // Agregar una línea en blanco
 			arg1.status = -1;
             *result = -1; // Clave duplicada, retorna error
 			retval = TRUE;
@@ -77,7 +93,7 @@ set_value_1_svc(struct CLAVE_get_value_result arg1, int *result,  struct svc_req
     ptr->siguiente = l;
     l = ptr;
 	printf("------------Tupla de clave %d insertada------------\n", arg1.clave);
-    //printList();
+    printList();
     retval = TRUE;
 	arg1.status = 0;
     *result = 0;
@@ -88,11 +104,10 @@ bool_t
 get_value_1_svc(int clave, struct CLAVE_get_value_result *result,  struct svc_req *rqstp)
 {
 	bool_t retval;
-	printf("---------------------Get Value--------------------\n");
-	printf("\n\n"); // Agregar una línea en blanco
 	// Verificar si la lista está vacía
 	if (l == NULL) {
-        printf("La lista está vacía");
+        printf("---------------------Get Value--------------------\n");
+	    printf("\n\n"); // Agregar una línea en blanco
 		retval = TRUE;
 		result->status = -1;
         return retval;
@@ -109,15 +124,17 @@ get_value_1_svc(int clave, struct CLAVE_get_value_result *result,  struct svc_re
             for (int i = 0; i < result->N_val; i++) {
                 result->V_valor2[i] = aux->valor2[i];
             }
+            printf("------------Tupla de clave %d encontrada------------\n", clave);
+            printf("\n\n"); // Agregar una línea en blanco
 			retval = TRUE;
 			result->status = 0;
 			return retval;
         }
         aux = aux->siguiente;
     }
-    perror("Se ha intentado acceder a una clave que no existe");
-	retval = TRUE;
-	result->status = 0;
+    perror("------------Se ha intentado acceder a una clave que no existe (get_value)--------\n");
+    printf("\n\n"); // Agregar una línea en blanco
+	result->status = -1;
 	return retval;
 }
 
@@ -126,7 +143,8 @@ modify_value_1_svc(struct CLAVE_get_value_result arg1, int *result,  struct svc_
 {	
 	bool_t retval;
 	if (l == NULL) {
-        perror("La lista está vacía");
+        perror("------------La lista está vacía. Modify_value--------------\n");
+        printf("\n\n"); // Agregar una línea en blanco
 		retval = TRUE;
 		arg1.status = -1;
 		*result=-1;
@@ -146,17 +164,18 @@ modify_value_1_svc(struct CLAVE_get_value_result arg1, int *result,  struct svc_
             aux->valor2 = malloc(arg1.N_val * sizeof(double));
             for(int i = 0; i < arg1.N_val; i++){
                 aux->valor2[i] = arg1.V_valor2[i];
-				printf("%f/n",arg1.V_valor2[i]);
-				printf("\n\n"); // Agregar una línea en blanco
             }
 			retval = TRUE;
 			arg1.status=0;
 			*result = 0;
+            printf("------------Tupla de clave %d modificada------------\n", aux->clave);
+            printList();
             return retval;
         }
         aux = aux->siguiente;
     }
-    perror("Se ha intentado modificar a una clave que no existe");
+    perror("--------------Se ha intentado modificar a una clave que no existe (modify_value)----------------\n");
+    printf("\n\n"); // Agregar una línea en blanco
 	retval = TRUE;
     arg1.status = -1;
 	*result=-1;
@@ -202,7 +221,7 @@ delete_key_1_svc(int arg1, int *result,  struct svc_req *rqstp)
         previous->siguiente = current->siguiente;
     }
 	printf("------------Tupla de clave %d eliminada------------\n", arg1);
-    //printList(l);
+    printList();
     // Liberar la memoria del nodo eliminado
     free(current->valor2); // Liberar la memoria del arreglo valor2
     free(current->valor1); // Liberar la memoria de la cadena valor1
@@ -243,6 +262,8 @@ exist_1_svc(int arg1, int *result,  struct svc_req *rqstp)
 		return retval;
     }
     else{
+        printf("----------------La clave %d existe----------------\n", arg1);
+        printf("\n\n"); // Agregar una línea en blanco
         retval = TRUE;
 		*result = 1;
 		return retval;

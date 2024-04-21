@@ -50,7 +50,7 @@ int main(){
     
     
     //El cliente 1 obtiene los valores asociados a la clave 1
-    /*char *gvalue= (char *) malloc(sizeof(char)*MAXSIZE_STRING);
+    char *gvalue= (char *) malloc(sizeof(char)*MAXSIZE_STRING);
     int N3;
     double *vector3 = (double *) malloc(sizeof(double)*MAX_SIZE);
     if(get_value(2, gvalue, &N3, vector3)){
@@ -67,7 +67,7 @@ int main(){
             printf("%f, ", vector3[i]);
         }    
         printf("]\n");    
-    }*/
+    }
     
     //El cliente 1 modifica los valores asociados a la clave 1
     char cadena4[MAXSIZE_STRING] = "Adios mundo";
