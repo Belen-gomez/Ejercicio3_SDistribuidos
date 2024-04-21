@@ -135,6 +135,7 @@ get_value_1_svc(int clave, struct CLAVE_get_value_result *result,  struct svc_re
     perror("------------Se ha intentado acceder a una clave que no existe (get_value)--------\n");
     printf("\n\n"); // Agregar una línea en blanco
 	result->status = -1;
+	retval = TRUE;
 	return retval;
 }
 

@@ -2,7 +2,7 @@
 
 # Parameters
 
-SERVER = clave_server
+SERVER = servidor
 
 BIN_FILES  = cliente1 cliente2 cliente3
 LIB_FILE = libclaves.so
@@ -15,9 +15,9 @@ SOURCES_SVC.c =
 SOURCES_SVC.h =
 SOURCES.x = clave.x
 
-TARGETS_SVC.c = clave_svc.c clave_server.c clave_xdr.c
+TARGETS_SVC.c = clave_svc.c servidor.c clave_xdr.c
 TARGETS_CLNT.c = clave_clnt.c clave_xdr.c
-TARGETS = clave.h clave_xdr.c clave_clnt.c clave_svc.c clave_server.c
+TARGETS = clave.h clave_xdr.c clave_clnt.c clave_svc.c servidor.c
 
 OBJECTS_CLNT = $(SOURCES_CLNT.c:%.c=%.o) $(TARGETS_CLNT.c:%.c=%.o)
 OBJECTS_SVC = $(SOURCES_SVC.c:%.c=%.o) $(TARGETS_SVC.c:%.c=%.o)
